@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Love Letter</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#6ec6ff,#cfefff);
+}
+
+/* FLOATING HEARTS */
+.hearts{
+  position:fixed;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+}
+.heart{
+  position:absolute;
+  width:14px;
+  height:14px;
+  background:#ff5f7e;
+  transform:rotate(45deg);
+  opacity:.5;
+  animation:float 14s linear infinite;
+}
+.heart:before,.heart:after{
+  content:'';
+  position:absolute;
+  width:14px;
+  height:14px;
+  background:#ff5f7e;
+  border-radius:50%;
+}
+.heart:before{top:-7px}
+.heart:after{left:-7px}
+
+@keyframes float{
+  0%{transform:translateY(110vh) rotate(45deg)}
+  100%{transform:translateY(-120vh) rotate(45deg)}
+}
+
+/* CONTAINER */
+.container{
+  width:360px;
+  text-align:center;
+  z-index:5;
+}
+
+/* ENVELOPE */
+.envelope{
+  position:relative;
+  height:260px;
+  background:#ff4d6d;
+  border-radius:14px;
+  box-shadow:0 20px 40px rgba(0,0,0,.3);
+  overflow:hidden;
+}
+
+/* FLAP */
+.envelope::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;
+  border-left:180px solid transparent;
+  border-right:180px solid transparent;
+  border-top:130px solid #ff8fa3;
+  transform-origin:top;
+  transition:2.2s cubic-bezier(.25,.8,.25,1);
+  z-index:4;
+}
+
+/* BOTTOM */
+.envelope::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;
+  border-left:180px solid #ff3b5c;
+  border-right:180px solid #ff3b5c;
+  border-top:130px solid transparent;
+  z-index:1;
+}
+
+/* LETTER */
+.letter{
+  position:absolute;
+  width:90%;
+  height:82%;
+  background:#fff;
+  left:5%;
+  top:145%;
+  padding:20px;
+  border-radius:10px;
+  overflow-y:auto;
+  transition:2.2s cubic-bezier(.25,.8,.25,1);
+  z-index:3;
+  font-family:'Dancing Script',cursive;
+}
+
+/* OPEN */
+.envelope.open::before{
+  transform:rotateX(180deg);
+  z-index:1;
+}
+.envelope.open .letter{
+  top:8%;
+}
+
+/* TEXT */
+.line{
+  opacity:0;
+  transform:translateY(10px);
+  transition:0.8s ease;
+  font-size:17px;
+  line-height:1.6;
+  color:#333;
+}
+.line.show{
+  opacity:1;
+  transform:translateY(0);
+}
+.name{
+  font-size:24px;
+  color:#ff3b5c;
+  margin-bottom:12px;
+}
+
+/* SCROLL */
+.letter::-webkit-scrollbar{width:6px}
+.letter::-webkit-scrollbar-thumb{
+  background:#ff8fa3;
+  border-radius:10px;
+}
+
+/* BUTTONS */
+.buttons{margin-top:18px}
+button{
+  padding:10px 26px;
+  border:none;
+  border-radius:25px;
+  background:#ff3b5c;
+  color:#fff;
+  font-size:14px;
+  cursor:pointer;
+  margin:6px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="hearts" id="hearts"></div>
+
+<div class="container">
+  <div class="envelope" id="envelope">
+    <div class="letter">
+
+      <div class="line name">My Love,</div>
+
+      <div class="line">As this new year begins, I just want you to know how grateful I am for you.</div>
+      <div class="line">You bring so much happiness into my life — your smile, your presence,</div>
+      <div class="line">the way you make even ordinary moments feel special.</div><br>
+
+      <div class="line">This year, I promise more laughter, more adventures,</div>
+      <div class="line">and more memories we’ll look back at with the biggest smiles.</div>
+      <div class="line">I promise to love you louder, hold you closer,</div>
+      <div class="line">support your dreams, and walk beside you through every beautiful moment ahead.</div><br>
+
+      <div class="line">With you, life feels lighter, warmer, and full of hope.</div>
+      <div class="line">Every year feels special because of you,</div>
+      <div class="line">but this one feels even more exciting — because it’s another year</div>
+      <div class="line">with my baby by my side.</div><br>
+
+      <div class="line">Here’s to us, to love, and to countless happy moments waiting for us.</div>
+      <div class="line"><b>Happy New Year, my love 🥹🫶🏻</b></div>
+
+    </div>
+  </div>
+
+  <div class="buttons">
+    <button onclick="openLetter()">OPEN</button>
+    <button onclick="closeLetter()">CLOSE</button>
+  </div>
+</div>
+
+<!-- MUSIC -->
+<audio id="music" loop>
+  <source src="https://docs.google.com/uc?export=download&id=1aiODr5Ty4-2P6VahcqvTknmbM5Swt7Er" type="audio/mpeg">
+</audio>
+
+<script>
+const envelope=document.getElementById("envelope");
+const music=document.getElementById("music");
+const lines=document.querySelectorAll(".line");
+
+function openLetter(){
+  envelope.classList.add("open");
+  music.play(); // ✅ Song starts on OPEN button click
+  lines.forEach(l=>l.classList.remove("show"));
+  lines.forEach((line,i)=>{
+    setTimeout(()=>line.classList.add("show"), i*700);
+  });
+}
+
+function closeLetter(){
+  envelope.classList.remove("open");
+  music.pause(); // ✅ Song stops on CLOSE
+  music.currentTime=0;
+  lines.forEach(l=>l.classList.remove("show"));
+}
+
+/* HEARTS */
+const hearts=document.getElementById("hearts");
+for(let i=0;i<30;i++){
+  const h=document.createElement("div");
+  h.className="heart";
+  h.style.left=Math.random()*100+"%";
+  h.style.animationDuration=10+Math.random()*10+"s";
+  h.style.opacity=Math.random();
+  hearts.appendChild(h);
+}
+</script>
+
+</body>
+</html>
